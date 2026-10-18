@@ -1,0 +1,5 @@
+comment = 'Linear algebra calculations'
+default_version = '1.0'
+module_pathname = '$libdir/pg_array_linalg'
+relocatable = true
+trusted = true

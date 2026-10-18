@@ -1,0 +1,182 @@
+CREATE EXTENSION pg_array_linalg;
+SELECT array_dot(ARRAY[1,2,3], ARRAY[4,5,6]) AS result;
+ result 
+--------
+     32
+(1 row)
+
+SELECT array_dot(ARRAY[-1, 2, -3], ARRAY[4, -5, 6]) AS result;
+ result 
+--------
+    -32
+(1 row)
+
+SELECT array_dot(ARRAY[1.5, 2.5], ARRAY[2.0, 4.0]) AS result;
+ result 
+--------
+     13
+(1 row)
+
+SELECT array_dot(NULL, ARRAY[1,2,3]) AS result;
+ result 
+--------
+       
+(1 row)
+
+SELECT array_dot(ARRAY[1,2,3], NULL) AS result;
+ result 
+--------
+       
+(1 row)
+
+SELECT array_dot(ARRAY[1,2,3], ARRAY[4,5]) AS result;
+ERROR:  vectors must have the same length
+SELECT array_dot(ARRAY[[1,2],[3,4]], ARRAY[[5,6],[7,8]]) AS result;
+ERROR:  both arguments must be 1D arrays
+SELECT array_matmul(ARRAY[[1,2],[3,4]], ARRAY[[5,6],[7,8]]) AS result;
+      result       
+-------------------
+ {{19,22},{43,50}}
+(1 row)
+
+SELECT array_matmul(ARRAY[[1,2,3],[4,5,6]], ARRAY[[7,8],[9,10],[11,12]]) AS result;
+       result        
+---------------------
+ {{58,64},{139,154}}
+(1 row)
+
+SELECT array_matmul(ARRAY[[1,0],[0,1]], ARRAY[[5,6],[7,8]]) AS result;
+    result     
+---------------
+ {{5,6},{7,8}}
+(1 row)
+
+SELECT array_matmul(NULL, ARRAY[[1,2],[3,4]]) AS result;
+ result 
+--------
+ 
+(1 row)
+
+SELECT array_matmul(ARRAY[[1,2],[3,4]], NULL) AS result;
+ result 
+--------
+ 
+(1 row)
+
+SELECT array_matmul(ARRAY[[1,2],[3,4]], ARRAY[[1,2,3],[4,5,6],[7,8,9]]) AS result;
+ERROR:  matrix dimensions are incompatible for multiplication
+SELECT array_transpose(ARRAY[[1,2,3],[4,5,6]]) AS result;
+       result        
+---------------------
+ {{1,4},{2,5},{3,6}}
+(1 row)
+
+SELECT array_transpose(ARRAY[[1,2],[3,4]]) AS result;
+    result     
+---------------
+ {{1,3},{2,4}}
+(1 row)
+
+SELECT array_transpose(ARRAY[1,2,3]) AS result;
+ result  
+---------
+ {1,2,3}
+(1 row)
+
+SELECT array_transpose(NULL) AS result;
+ERROR:  could not determine polymorphic type because input has type unknown
+SELECT array_det(ARRAY[[5]]) AS result;
+ result 
+--------
+      5
+(1 row)
+
+SELECT array_det(ARRAY[[1,2],[3,4]]) AS result;
+ result 
+--------
+     -2
+(1 row)
+
+SELECT array_det(ARRAY[[1,2,3],[4,5,6],[7,8,9]]) AS result;
+ result 
+--------
+      0
+(1 row)
+
+SELECT array_det(ARRAY[[1,0],[0,1]]) AS result;
+ result 
+--------
+      1
+(1 row)
+
+SELECT array_det(NULL) AS result;
+ERROR:  could not determine polymorphic type because input has type unknown
+SELECT array_det(ARRAY[[1,2,3],[4,5,6]]) AS result;
+ERROR:  matrix must be square
+SELECT array_inv(ARRAY[[2,0],[0,2]]) AS result;
+       result        
+---------------------
+ {{0.5,-0},{-0,0.5}}
+(1 row)
+
+SELECT array_inv(ARRAY[[1,0],[0,1]]) AS result;
+     result      
+-----------------
+ {{1,-0},{-0,1}}
+(1 row)
+
+SELECT array_inv(ARRAY[[4,7],[2,6]]) AS result;
+                        result                         
+-------------------------------------------------------
+ {{0.6000000000000001,-0.7000000000000001},{-0.2,0.4}}
+(1 row)
+
+SELECT array_matmul(ARRAY[[2,0],[0,2]], array_inv(ARRAY[[2,0],[0,2]])) AS result;
+    result     
+---------------
+ {{1,0},{0,1}}
+(1 row)
+
+SELECT array_inv(NULL) AS result;
+ERROR:  could not determine polymorphic type because input has type unknown
+SELECT array_inv(ARRAY[[1,2],[2,4]]) AS result;
+ERROR:  matrix is singular or not square
+SELECT array_inv(ARRAY[[1,2,3],[4,5,6]]) AS result;
+ERROR:  matrix is singular or not square
+SELECT array_solve(ARRAY[[2,1],[1,1]], ARRAY[5,3]) AS result;
+ result 
+--------
+ {2,1}
+(1 row)
+
+SELECT array_solve(ARRAY[[1,0],[0,1]], ARRAY[5,7]) AS result;
+ result 
+--------
+ {5,7}
+(1 row)
+
+SELECT array_solve(ARRAY[[2,0],[0,3]], ARRAY[4,9]) AS result;
+ result 
+--------
+ {2,3}
+(1 row)
+
+SELECT array_solve(NULL, ARRAY[1,2]) AS result;
+ result 
+--------
+ 
+(1 row)
+
+SELECT array_solve(ARRAY[[1,2],[3,4]], NULL) AS result;
+ result 
+--------
+ 
+(1 row)
+
+SELECT array_solve(ARRAY[[1,2,3],[4,5,6]], ARRAY[1,2]) AS result;
+ERROR:  matrix dimensions are incompatible
+SELECT array_solve(ARRAY[[1,2],[3,4]], ARRAY[1,2,3]) AS result;
+ERROR:  matrix dimensions are incompatible
+SELECT array_solve(ARRAY[[1,2],[2,4]], ARRAY[1,2]) AS result;
+ERROR:  matrix is singular or not square
+DROP EXTENSION pg_array_linalg;
