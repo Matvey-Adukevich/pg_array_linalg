@@ -117,7 +117,6 @@ static int array_to_matrix(ArrayType *array, pg_matrix *result) {
 					 errmsg("array elements cannot be NULL")));
 		}
 
-		/* Поддерживаем конвертацию разных типов данных в double */
 		if (element_type == FLOAT8OID) {
 			val = DatumGetFloat8(elems[i]);
 		} else if (element_type == INT4OID) {
@@ -362,7 +361,7 @@ static int pg_inverse_matrix(pg_matrix *A, pg_matrix *result) {
 	}
 
 	det = pg_det_recursive(A);
-	if (fabs(det) < 1e-7) {
+	if (fabs(det) < 1e-12) {
 		return ERROR_CNTM;
 	}
 
