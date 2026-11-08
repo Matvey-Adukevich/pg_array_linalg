@@ -44,4 +44,11 @@ SELECT array_solve(ARRAY[[1,2,3],[4,5,6]], ARRAY[1,2]) AS result;
 SELECT array_solve(ARRAY[[1,2],[3,4]], ARRAY[1,2,3]) AS result;
 SELECT array_solve(ARRAY[[1,2],[2,4]], ARRAY[1,2]) AS result;
 
+SELECT (array_inv(ARRAY[[2,0],[0,2]]))[1][1] AS result;
+SELECT array_matmul(ARRAY[[2147483647]], ARRAY[[2]]) AS result;
+SELECT array_transpose(ARRAY[9223372036854775807::bigint]) AS result;
+SELECT array_det(ARRAY[[9007199254740993::numeric]]) AS result;
+SELECT array_transpose(ARRAY[[9007199254740993::numeric, 1::numeric], [2::numeric, 3::numeric]]) AS result;
+SELECT array_inv(ARRAY[[0.0001::float8, 0.0::float8], [0.0::float8, 0.0001::float8]]) AS result;
+
 DROP EXTENSION pg_array_linalg;

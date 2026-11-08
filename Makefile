@@ -8,6 +8,8 @@ PGFILEDESC = "Linear algebra calculations"
 
 REGRESS = pg_array_linalg_test
 
+TAP_TESTS = t/001_basic.pl t/002_parallel.pl t/003_large_data.pl
+
 ifdef USE_PGXS
 PG_CONFIG = pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
