@@ -13,6 +13,7 @@
 #include "catalog/pg_type.h"
 #include "access/tupmacs.h"
 #include <math.h>
+#include "miscadmin.h"
 
 #ifdef PG_MODULE_MAGIC
 PG_MODULE_MAGIC;
@@ -264,6 +265,7 @@ static void pg_get_minor(int row, int col, pg_matrix *A, pg_matrix *result) {
 }
 
 static double pg_det_recursive(pg_matrix *A) {
+	check_stack_depth();
 	if (A->rows == 1) {
 		return A->matrix[0][0];
 	} else if (A->rows == 2) {
